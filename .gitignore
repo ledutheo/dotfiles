@@ -1,0 +1,27 @@
+# Dotfiles repo - things we don't want to commit
+
+# Sensitive or machine-specific
+.ssh/
+*.pem
+id_*
+known_hosts
+
+# Local overrides (user should create these)
+.zshrc.local
+.gitconfig.local
+
+# Backup files created by installer
+.dotfiles-backup/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs
+*.log

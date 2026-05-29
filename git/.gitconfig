@@ -1,0 +1,54 @@
+[user]
+	name = ledutheo
+	email = theoledu@muslim.com
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nano
+	autocrlf = false
+	safecrlf = true
+	excludesFile = ~/.gitignore_global
+
+[commit]
+	gpgsign = false  # Set to true later if you want commit signing
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = simple
+
+[alias]
+	# Pretty log
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+
+	# Short status
+	s = status -s
+
+	# Quick commit
+	c = commit -m
+	ca = commit -am
+
+	# Branch helpers
+	co = checkout
+	cb = checkout -b
+	br = branch
+
+	# Undo last commit (soft)
+	undo = reset --soft HEAD~1
+
+	# Show changes
+	diffc = diff --cached
+
+[credential]
+	helper = cache --timeout=3600
+
+[diff]
+	tool = vimdiff
+
+[merge]
+	tool = vimdiff

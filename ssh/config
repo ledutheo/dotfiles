@@ -1,0 +1,28 @@
+# SSH configuration - ledutheo dotfiles
+# This file is symlinked to ~/.ssh/config
+
+# Global defaults
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 10
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 4h
+    AddKeysToAgent yes
+    UseKeychain no   # macOS only, safe to leave
+
+# GitHub
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+
+# GitLab (example)
+# Host gitlab.com
+#     HostName gitlab.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519
+#     IdentitiesOnly yes
+
+# Add your other hosts below
