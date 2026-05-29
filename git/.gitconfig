@@ -12,7 +12,7 @@
 	excludesFile = ~/.gitignore_global
 
 [commit]
-	gpgsign = false  # Set to true later if you want commit signing
+	gpgsign = false
 
 [pull]
 	rebase = true
@@ -21,28 +21,44 @@
 	autoSetupRemote = true
 	default = simple
 
+[fetch]
+	prune = true
+
 [alias]
-	# Pretty log
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	# Pretty logs
+	lg  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
 
-	# Short status
-	s = status -s
+	# Status & diff
+	s   = status -s
+	d   = diff
+	dc  = diff --cached
+	ds  = diff --staged
 
-	# Quick commit
-	c = commit -m
-	ca = commit -am
+	# Commit shortcuts
+	c   = commit -m
+	ca  = commit -am
+	amend = commit --amend --no-edit
 
-	# Branch helpers
-	co = checkout
-	cb = checkout -b
-	br = branch
+	# Branch & checkout
+	co  = checkout
+	cb  = checkout -b
+	br  = branch -vv
+	bd  = branch -d
 
-	# Undo last commit (soft)
+	# Stash
+	st  = stash
+	sp  = stash pop
+
+	# Undo & reset
 	undo = reset --soft HEAD~1
+	hard = reset --hard HEAD~1
 
-	# Show changes
-	diffc = diff --cached
+	# Remote
+	r  = remote -v
+
+	# Last commit message
+	last = log -1 --pretty=%B
 
 [credential]
 	helper = cache --timeout=3600

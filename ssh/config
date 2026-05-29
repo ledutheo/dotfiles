@@ -9,7 +9,7 @@ Host *
     ControlPath ~/.ssh/sockets/%r@%h-%p
     ControlPersist 4h
     AddKeysToAgent yes
-    UseKeychain no   # macOS only, safe to leave
+    # UseKeychain no   # macOS only - commented out for Linux compatibility
 
 # GitHub
 Host github.com

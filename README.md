@@ -1,65 +1,56 @@
 # dotfiles
 
-> Personal configuration files for a clean, powerful, and reproducible development environment.
+> Mes configurations personnelles pour un environnement de développement propre, moderne et reproductible.
 
-![Shell](https://img.shields.io/badge/Shell-zsh-blue)
-![OS](https://img.shields.io/badge/OS-Manjaro%20%2F%20Arch-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
+![zsh](https://img.shields.io/badge/Shell-zsh-blueviolet)
+![Manjaro](https://img.shields.io/badge/OS-Manjaro%20%2F%20Arch-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Stars](https://img.shields.io/github/stars/ledutheo/dotfiles?style=social)
 
-## Overview
+---
 
-This repository contains my personal dotfiles. It is designed to be:
-
-- **Safe** — existing configurations are automatically backed up
-- **Idempotent** — you can run the installer multiple times without issues
-- **Modular** — easy to understand and extend
-- **Modern** — includes quality-of-life improvements while staying compatible with Manjaro defaults
-
-## Quick Start
+## 🚀 Installation rapide
 
 ```bash
-# Clone the repository
 git clone git@github.com:ledutheo/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-
-# Run the installer
 ./install.sh
 ```
 
-Then restart your terminal.
+Redémarre ton terminal. C’est tout.
 
-## What Gets Installed
+## ✨ Ce que ça installe
 
-| Component     | Target                  | Description                              |
-|---------------|-------------------------|------------------------------------------|
-| Zsh           | `~/.zshrc`              | Enhanced shell with useful aliases & modern tools support |
-| Git           | `~/.gitconfig`          | Professional defaults + powerful aliases |
-| SSH           | `~/.ssh/config`         | Optimized SSH config with connection multiplexing |
-| Scripts       | `~/.local/bin/`         | Useful utility scripts (update-system, etc.) |
-| Gitignore     | `~/.gitignore_global`   | Global ignore rules                      |
+| Composant     | Cible                    | Ce que ça apporte                              |
+|---------------|--------------------------|------------------------------------------------|
+| **Zsh**       | `~/.zshrc`               | Aliases utiles + support des outils modernes  |
+| **Git**       | `~/.gitconfig`           | Configuration pro + alias puissants           |
+| **SSH**       | `~/.ssh/config`          | Multiplexing + optimisations de connexion     |
+| **Scripts**   | `~/.local/bin/`          | Outils pratiques (mise à jour système, etc.)  |
+| **Gitignore** | `~/.gitignore_global`    | Règles globales de base                       |
 
-## Recommended Tools
+## 🛠 Outils recommandés (fortement)
 
-After installation, I highly recommend installing these modern CLI tools:
+Après l’installation, je te conseille d’installer ces outils modernes :
 
 ```bash
 sudo pacman -S \
-  zoxide \      # smarter cd
-  fzf \         # fuzzy finder
-  bat \         # better cat
-  eza \         # better ls (or exa on older systems)
-  starship \    # beautiful cross-shell prompt
-  ripgrep \     # better grep (rg)
-  fd            # better find
+  zoxide \      # cd intelligent
+  fzf \         # recherche floue ultra rapide
+  bat \         # cat avec coloration syntaxique
+  eza \         # ls moderne et beau
+  starship \    # prompt magnifique et rapide
+  ripgrep \     # grep ultra performant (rg)
+  fd            # find moderne
 ```
 
-Then enable Starship by uncommenting the line in `zsh/.zshrc`.
+Puis décommente la ligne Starship dans `zsh/.zshrc`.
 
-## Project Structure
+## 📁 Structure du projet
 
 ```
 dotfiles/
-├── install.sh          # Main installer (run this)
+├── install.sh          # Script d’installation principal
 ├── README.md
 ├── zsh/
 │   └── .zshrc
@@ -67,32 +58,32 @@ dotfiles/
 │   └── .gitconfig
 ├── ssh/
 │   └── config
-├── scripts/
-│   └── update-system.sh
-└── docs/
+├── scripts/            # Scripts utilitaires
+├── docs/               # Documentation
+└── .github/
 ```
 
-## Philosophy
+## 💡 Philosophie
 
-- Keep it simple but powerful
-- Prefer tools that are already in the Arch/Manjaro repositories when possible
-- Never break the base Manjaro zsh experience
-- Make the environment pleasant without requiring a full rewrite
+- **Simple mais puissant** — pas de sur-ingénierie
+- Compatible avec la config Manjaro par défaut (je ne casse rien)
+- Backups automatiques avant toute modification
+- Facile à étendre et à comprendre dans 6 mois
 
-## Customization
+## 🔧 Personnalisation
 
-Want to add your own local overrides without committing them?
+Tu veux ajouter des choses sans les committer ?
 
-Create `~/.zshrc.local` — it will be automatically sourced.
+Crée simplement `~/.zshrc.local` — il sera sourcé automatiquement.
 
-## License
+## 📜 Licence
 
-MIT — feel free to take inspiration or fork it.
+MIT — tu peux copier, forker, t’inspirer librement.
 
-## Author
+## 👤 Auteur
 
 **ledutheo** — [github.com/ledutheo](https://github.com/ledutheo)
 
 ---
 
-*This repository is a living project. It will evolve as my workflow improves.*
+*Ce dépôt évolue avec mon workflow. Il n’est pas figé.*

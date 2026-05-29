@@ -1,60 +1,79 @@
 #!/usr/bin/env bash
 #
-# ledutheo dotfiles installer
-# Usage:
-#   ./install.sh
-#
-# This script sets up symlinks for your dotfiles.
-# It is safe to run multiple times.
+# ledutheo dotfiles - Installer
+# Version améliorée avec couleurs et meilleure UX
 #
 
 set -euo pipefail
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+LOG_FILE="$BACKUP_DIR/install.log"
 
-echo "==> ledutheo dotfiles installer"
-echo "    Source: $DOTFILES_DIR"
-echo ""
+print_header() {
+  echo -e "\n${CYAN}════════════════════════════════════════════════════${NC}"
+  echo -e "${CYAN}  ledutheo dotfiles installer${NC}"
+  echo -e "${CYAN}════════════════════════════════════════════════════${NC}\n"
+}
 
-# Create backup directory
+print_success() { echo -e "${GREEN}✔${NC} $1"; }
+print_info()    { echo -e "${BLUE}→${NC} $1"; }
+print_warning() { echo -e "${YELLOW}⚠${NC} $1"; }
+print_error()   { echo -e "${RED}✖${NC} $1"; }
+
+print_header
+
+echo -e "Source : ${BLUE}$DOTFILES_DIR${NC}"
+echo -e "Backups: ${BLUE}$BACKUP_DIR${NC}\n"
+
 mkdir -p "$BACKUP_DIR"
+touch "$LOG_FILE"
 
 backup_if_exists() {
   local target="$1"
   if [[ -e "$target" || -L "$target" ]]; then
-    echo "    Backing up: $target → $BACKUP_DIR/"
-    mv "$target" "$BACKUP_DIR/"
+    print_warning "Backup: $target"
+    mv "$target" "$BACKUP_DIR/" 2>> "$LOG_FILE"
   fi
 }
 
-link_file() {
+create_symlink() {
   local src="$1"
   local dest="$2"
 
   backup_if_exists "$dest"
   ln -s "$src" "$dest"
-  echo "    Linked: $dest → $src"
+  print_success "Linked: $dest"
 }
 
-echo "==> Installing configurations..."
+# ============================================
+# Installation
+# ============================================
+
+echo -e "${YELLOW}Installation des configurations...${NC}\n"
 
 # --- Zsh ---
-echo "[zsh]"
-link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+print_info "[zsh]"
+create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 
 # --- Git ---
-echo "[git]"
-link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
+print_info "[git]"
+create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 
-# Create global gitignore if it doesn't exist
 if [[ ! -f "$HOME/.gitignore_global" ]]; then
   cat > "$HOME/.gitignore_global" << 'EOF'
-# Global gitignore - ledutheo dotfiles
+# Global Git Ignore - ledutheo
 .DS_Store
 Thumbs.db
 *.swp
-*.swo
 *~
 .idea/
 .vscode/
@@ -62,39 +81,39 @@ Thumbs.db
 .env
 .env.local
 EOF
-  echo "    Created: ~/.gitignore_global"
+  print_success "Created: ~/.gitignore_global"
 fi
 
 # --- SSH ---
-echo "[ssh]"
+print_info "[ssh]"
 mkdir -p "$HOME/.ssh/sockets"
-chmod 700 "$HOME/.ssh"
-chmod 700 "$HOME/.ssh/sockets"
-
-link_file "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
-chmod 600 "$HOME/.ssh/config"
+chmod 700 "$HOME/.ssh" "$HOME/.ssh/sockets" 2>/dev/null || true
+create_symlink "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
+chmod 600 "$HOME/.ssh/config" 2>/dev/null || true
 
 # --- Scripts ---
-echo "[scripts]"
+print_info "[scripts]"
 mkdir -p "$HOME/.local/bin"
 
 for script in "$DOTFILES_DIR/scripts"/*.sh; do
-  if [[ -f "$script" ]]; then
-    name=$(basename "$script")
-    link_file "$script" "$HOME/.local/bin/${name}"
-    chmod +x "$HOME/.local/bin/${name}"
-  fi
+  [[ -f "$script" ]] || continue
+  name=$(basename "$script")
+  create_symlink "$script" "$HOME/.local/bin/${name}"
+  chmod +x "$HOME/.local/bin/${name}"
 done
 
-echo ""
-echo "==> Installation complete!"
-echo ""
-echo "Backups were saved in: $BACKUP_DIR"
-echo ""
-echo "Next steps:"
-echo "  1. Restart your terminal or run: source ~/.zshrc"
-echo "  2. (Optional but recommended) Install modern tools:"
-echo "       sudo pacman -S zoxide fzf bat eza starship"
-echo "  3. Enjoy a better shell experience."
-echo ""
-echo "To uninstall / restore backups, check the backup folder above."
+# ============================================
+# Final
+# ============================================
+
+echo -e "\n${GREEN}════════════════════════════════════════════════════${NC}"
+echo -e "${GREEN}  Installation terminée avec succès !${NC}"
+echo -e "${GREEN}════════════════════════════════════════════════════${NC}\n"
+
+echo -e "Backups sauvegardés dans : ${BLUE}$BACKUP_DIR${NC}"
+echo -e "\nProchaines étapes :"
+echo -e "  1. Redémarre ton terminal ou exécute : ${CYAN}source ~/.zshrc${NC}"
+echo -e "  2. Installe les outils recommandés (voir README)"
+echo -e "  3. Profite d'un shell plus agréable\n"
+
+print_success "Bonne journée !"
