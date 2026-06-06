@@ -2,6 +2,10 @@
 # ledutheo dotfiles - Zsh configuration
 # ============================================
 
+# --- Locale UTF-8 (évite les problèmes de clavier dans les TUI) ---
+export LANG="${LANG:-fr_FR.UTF-8}"
+export LC_CTYPE="${LC_CTYPE:-fr_FR.UTF-8}"
+
 # --- Manjaro base configuration ---
 USE_POWERLINE="true"
 HAS_WIDECHARS="false"
