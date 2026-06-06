@@ -18,8 +18,8 @@ if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
   source /usr/share/zsh/manjaro-zsh-prompt
 fi
 
-# --- Grok (local AI CLI) ---
-export PATH="$HOME/.grok/bin:$PATH"
+# --- Local tools (syskit, grok, scripts) ---
+export PATH="$HOME/.local/bin:$HOME/.grok/bin:$PATH"
 fpath=(~/.grok/completions/zsh $fpath)
 autoload -Uz compinit && compinit -C
 
