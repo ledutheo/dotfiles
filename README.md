@@ -12,8 +12,8 @@
 ## 🚀 Installation rapide
 
 ```bash
-git clone git@github.com:ledutheo/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone git@github.com:ledutheo/dotfiles.git ~/github/dotfiles
+cd ~/github/dotfiles
 ./install.sh
 ```
 
