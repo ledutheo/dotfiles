@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-DOTFILES_DIR="$HOME/dotfiles"
+DOTFILES_DIR="$HOME/github/dotfiles"
 
 if [[ ! -d "$DOTFILES_DIR" ]]; then
   echo "Error: $DOTFILES_DIR does not exist"
