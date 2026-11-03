@@ -3,20 +3,27 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# shellcheck source=_ui.sh
+source "$SCRIPT_DIR/_ui.sh"
+
 DOTFILES_DIR="$HOME/github/dotfiles"
 
+print_header "Mise à jour des dotfiles"
+
 if [[ ! -d "$DOTFILES_DIR" ]]; then
-  echo "Error: $DOTFILES_DIR does not exist"
-  echo "Clone it first: git clone git@github.com:ledutheo/dotfiles.git ~/github/dotfiles"
+  print_error "$DOTFILES_DIR n'existe pas"
+  echo "Clone d'abord : git clone git@github.com:ledutheo/dotfiles.git ~/github/dotfiles"
   exit 1
 fi
 
 cd "$DOTFILES_DIR"
 
-echo "==> Pulling latest changes..."
+print_info "git pull --rebase"
 git pull --rebase
+print_success "Dépôt à jour"
 
-echo "==> Re-running installer to update symlinks..."
+print_info "Réinstallation des liens"
 ./install.sh
 
-echo "==> Dotfiles updated successfully."
+print_done "Dotfiles à jour"

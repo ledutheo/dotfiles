@@ -26,6 +26,7 @@ Redémarre ton terminal. C’est tout.
 | **Zsh**       | `~/.zshrc`               | Aliases utiles + support des outils modernes  |
 | **Git**       | `~/.gitconfig`           | Configuration pro + alias puissants           |
 | **SSH**       | `~/.ssh/config`          | Multiplexing + optimisations de connexion     |
+| **Starship**  | `~/.config/starship.toml`| Prompt court (dossier + git), palette Tokyo Night |
 | **Scripts**   | `~/.local/bin/`          | Outils pratiques (mise à jour système, etc.)  |
 | **Gitignore** | `~/.gitignore_global`    | Règles globales de base                       |
 
@@ -44,7 +45,19 @@ sudo pacman -S \
   fd            # find moderne
 ```
 
-Puis décommente la ligne Starship dans `zsh/.zshrc`.
+Starship est branché automatiquement par `./install.sh`.
+
+Raccourcis du quotidien (après `source ~/.zshrc`) :
+
+```bash
+github          # cd ~/github
+dots            # cd ~/github/dotfiles
+1975            # cd ~/github/1975
+update          # update-system.sh (pacman + AUR + orphelins)
+cleanup         # cleanup.sh
+lt              # arborescence eza, 2 niveaux
+gs / gl / gaa   # git status / log graph / add -A
+```
 
 ## 📁 Structure du projet
 

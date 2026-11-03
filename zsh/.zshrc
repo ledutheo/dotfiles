@@ -6,7 +6,7 @@
 export LANG="${LANG:-fr_FR.UTF-8}"
 export LC_CTYPE="${LC_CTYPE:-fr_FR.UTF-8}"
 
-# --- Manjaro base configuration ---
+# --- Manjaro base (complétion / raccourcis) ---
 USE_POWERLINE="true"
 HAS_WIDECHARS="false"
 
@@ -14,20 +14,23 @@ if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
   source /usr/share/zsh/manjaro-zsh-config
 fi
 
-if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
+# Prompt : Starship si dispo, sinon le prompt Manjaro
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+elif [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
   source /usr/share/zsh/manjaro-zsh-prompt
 fi
 
-# --- Local tools (syskit, grok, scripts) ---
-export PATH="$HOME/.local/bin:$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
+# --- Local tools (grok, scripts) ---
+export PATH="$HOME/.local/node/bin:$HOME/.local/bin:$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh ~/.zfunc $fpath)
 autoload -Uz compinit && compinit -C
+zstyle ':completion:*' menu select
 
 # ============================================
-# Modern Developer Quality of Life
+# History & navigation
 # ============================================
 
-# History
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
@@ -36,94 +39,106 @@ setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY
 setopt APPEND_HISTORY
 
-# Better directory navigation
 setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
-
-# Correction
 setopt CORRECT
 
 # ============================================
-# Useful Aliases
+# Aliases
 # ============================================
 
-# Navigation & listing
+# Navigation
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias github='cd ~/github'
+alias dots='cd ~/github/dotfiles'
+alias 1975='cd ~/github/1975'
+alias scripts='cd ~/github/scripts'
+
+# Listing (eza si installé, sinon ls)
 alias l='ls -lah --color=auto'
 alias ll='ls -lh --color=auto'
 alias la='ls -lAh --color=auto'
 
-# Git (short & powerful)
+# Git
 alias gs='git status -s'
 alias ga='git add'
+alias gaa='git add -A'
 alias gc='git commit -m'
 alias gca='git commit -am'
 alias gp='git push'
-alias gpl='git pull'
+alias gpl='git pull --rebase'
 alias gl='git lg'
 alias gla='git lga'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gco='git checkout'
-alias gb='git branch'
+alias gb='git br'
 alias gcb='git checkout -b'
+alias gundo='git undo'
+alias glast='git last'
 
-# System
-alias update='sudo pacman -Syu'
-alias orphans='sudo pacman -Rns $(pacman -Qtdq) 2>/dev/null || echo "No orphans to remove"'
+# Scripts du quotidien (les vrais, pas pacman nu)
+alias update='update-system.sh'
+alias cleanup='cleanup.sh'
+alias dots-up='dotfiles-update.sh'
+alias locale-fix='fix-grok-keyboard-locale.sh'
+alias orphans='pacman -Qtdq || echo "Aucun orphelin"'
 
-# Safety
+# Pacman lecture
+alias pss='pacman -Ss'
+alias pqi='pacman -Qi'
+
+# Sécurité
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-# Quick edit
+# Pratique
+alias open='xdg-open'
+alias ports='ss -tulpn'
+alias showpath='print -l $path'
 alias zshrc='${EDITOR:-nano} ~/.zshrc'
-alias reload='source ~/.zshrc && echo "Zsh reloaded"'
+alias reload='source ~/.zshrc && echo "Zsh rechargé"'
 
 # ============================================
-# Modern Tools (if installed)
+# Outils modernes (si installés)
 # ============================================
 
-# zoxide (smarter cd)
 if command -v zoxide &>/dev/null; then
   eval "$(zoxide init zsh)"
   alias cd='z'
 fi
 
-# fzf (fuzzy finder)
 if command -v fzf &>/dev/null; then
-  source <(fzf --zsh 2>/dev/null || fzf --fish 2>/dev/null) 2>/dev/null || true
+  source <(fzf --zsh 2>/dev/null) 2>/dev/null || true
 fi
 
-# bat (better cat)
 if command -v bat &>/dev/null; then
   alias cat='bat --style=plain'
   alias catp='bat --paging=never'
 fi
 
-# eza (better ls) - fallback to exa on older systems
 if command -v eza &>/dev/null; then
   alias ls='eza --icons --group-directories-first'
   alias ll='eza -lh --icons --group-directories-first'
   alias la='eza -lah --icons --group-directories-first'
+  alias lt='eza --tree --level=2 --icons --group-directories-first'
 elif command -v exa &>/dev/null; then
   alias ls='exa --icons --group-directories-first'
   alias ll='exa -lh --icons --group-directories-first'
+  alias la='exa -lah --icons --group-directories-first'
 fi
 
 # ============================================
-# Prompt enhancement (optional)
-# ============================================
-
-# If you install starship later, uncomment:
-# eval "$(starship init zsh)"
-
-# ============================================
-# Local overrides (not committed)
+# Local overrides (pas commité)
 # ============================================
 
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+export LIBVIRT_DEFAULT_URI=qemu:///system
+
+# metavr shell completions
+fpath=("/home/bill/.metavr/completions" $fpath)
+autoload -Uz compinit && compinit

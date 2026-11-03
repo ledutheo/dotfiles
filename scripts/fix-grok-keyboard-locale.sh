@@ -1,32 +1,28 @@
-#!/bin/bash
-# Script de réparation du problème de clavier + encodage (locale UTF-8)
-# Cause des saisies bizarres dans Grok TUI et ailleurs
+#!/usr/bin/env bash
+# Répare locale UTF-8 (saisies bizarres dans Grok TUI et ailleurs)
 
-set -e
+set -euo pipefail
 
-echo "=== Réparation locale clavier/encodage ==="
-echo "LANG actuel: $LANG"
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# shellcheck source=_ui.sh
+source "$SCRIPT_DIR/_ui.sh"
 
-echo
-echo "Étape 1: Activation de fr_CH.UTF-8 dans /etc/locale.gen"
+print_header "Réparation locale UTF-8"
+
+print_info "LANG actuel : ${LANG:-unset}"
+print_info "charmap     : $(locale charmap 2>/dev/null || echo '?')"
+
+print_info "Activation de fr_CH.UTF-8 dans /etc/locale.gen"
 sudo sed -i 's/# fr_CH.UTF-8 UTF-8/fr_CH.UTF-8 UTF-8/' /etc/locale.gen || true
 
-echo
-echo "Étape 2: Génération des locales (peut prendre 10-20 secondes)"
+print_info "Génération des locales (10–20 s)"
 sudo locale-gen
 
-echo
-echo "Étape 3: Configuration par défaut"
+print_info "Défaut système : fr_CH.UTF-8"
 echo 'LANG="fr_CH.UTF-8"' | sudo tee /etc/default/locale > /dev/null
 echo 'LC_ALL="fr_CH.UTF-8"' | sudo tee -a /etc/default/locale > /dev/null
 
-echo
-echo "=== Terminé ==="
-echo "IMPORTANT: Déconnecte-toi complètement de ta session (ou redémarre)"
-echo "puis reconnecte-toi."
-echo
-echo "Après reconnexion, vérifie avec:"
-echo "  locale charmap"
-echo "(doit afficher UTF-8)"
-echo
-echo "Puis relance 'grok' et teste ton clavier."
+print_done "Locale configurée"
+print_warning "Déconnecte-toi complètement (ou redémarre), puis reconnecte-toi."
+echo "Vérifie avec :  locale charmap   (doit afficher UTF-8)"
+echo "Ensuite relance grok et teste le clavier."

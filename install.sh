@@ -91,6 +91,11 @@ chmod 700 "$HOME/.ssh" "$HOME/.ssh/sockets" 2>/dev/null || true
 create_symlink "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
 chmod 600 "$HOME/.ssh/config" 2>/dev/null || true
 
+# --- Starship ---
+print_info "[starship]"
+mkdir -p "$HOME/.config"
+create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml"
+
 # --- Scripts ---
 print_info "[scripts]"
 mkdir -p "$HOME/.local/bin"
@@ -98,6 +103,7 @@ mkdir -p "$HOME/.local/bin"
 for script in "$DOTFILES_DIR/scripts"/*.sh; do
   [[ -f "$script" ]] || continue
   name=$(basename "$script")
+  [[ "$name" == _* ]] && continue
   create_symlink "$script" "$HOME/.local/bin/${name}"
   chmod +x "$HOME/.local/bin/${name}"
 done

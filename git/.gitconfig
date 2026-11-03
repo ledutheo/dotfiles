@@ -24,6 +24,9 @@
 [fetch]
 	prune = true
 
+[color]
+	ui = auto
+
 [alias]
 	# Pretty logs
 	lg  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -61,7 +64,7 @@
 	last = log -1 --pretty=%B
 
 [credential]
-	helper = cache --timeout=3600
+	helper = cache --timeout=7200
 
 [diff]
 	tool = vimdiff
